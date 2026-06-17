@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT ASSET MANAGEMENT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+     <!---- INI HEADER ---->
+     <header class="header">
+        <h1>IT ASSET MANAGEMENT</h1>
+        <p>kelola semua asset dalam satu dashboard</p>
+     </header>
+
+     <!---- konten utama ----->
+     <main class="main-content">
+
+        <!---- dashboard isi penyimpanan ------>
+        <section class="stats-container" id="stats-container">
+            <div class="stats-card">
+                <span class="stats-number" id="total-assets">0</span>
+                <span class="stat-label">Total asset</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-number" id="active-assets">0</span>
+                <span class="stat-label">Aktif</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-number" id="maintenance-assets">0</span>
+                <span class="stats-label">Maintenance</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-number" id="retired-assets">0</span>
+                <span class="stats-label">Retired</span>
+            </div>
+        </section>
+
+        <!---- isi aset nya ------->
+        <section class="table-section">
+            <div class="table-header">
+                <h2>Daftar Aset</h2>
+                <button class="btn btn-primary" id="btn-add-asset">Tambah Aset</button>
+            </div>
+            <table class="asset-table" id="asset-table">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>nama aset</th>
+                        <th>kategori</th>
+                        <th>status</th>
+                        <th>user</th>
+                        <th>aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="asset-table-body">
+                </tbody>
+            </table>
+        </section>
+     </main>
+
+     <script src="app.js"></script>
+</body>
+</html>
