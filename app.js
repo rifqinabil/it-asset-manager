@@ -22,7 +22,7 @@ function saveAssets(assets) {
 // CRUD oprations
 
 // tambah asset baru
-function addAsset(nama, kategori, status, user) {
+function addAsset(nama, kategori, status, user, warranty) {
     const assets = getAssets();
 
     const newAsset = {
@@ -31,6 +31,7 @@ function addAsset(nama, kategori, status, user) {
         kategori: kategori,
         status: status,
         user: user,
+        warranty: warranty, 
         createdAt: new Date().toLocaleDateString('id-ID')
     };
 
@@ -103,13 +104,25 @@ function renderAssets() {
 
     if (filteredAssets.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">Tidak ada data aset yang cocok.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">Tidak ada data aset yang cocok.</td></tr>';
         return;
     }
 
     // loop setiap asset yang udah di-filter dan bikin row di table 
     for (let i = 0; i < filteredAssets.length; i++) {
         const asset = filteredAssets[i];
+        
+        // LOGIC ALERT GARANSI
+        const today = new Date();
+        const warrantyDate = new Date(asset.warranty);
+        const isExpired = warrantyDate < today; // Ngecek apakah udah expired
+        
         const row = document.createElement('tr');
+        
+        // Kalau expired, kasih class css warna merah
+        if (isExpired) {
+            row.className = 'row-expired';
+        }
 
         row.innerHTML = 
         '<td>' + asset.id + '</td>' +
@@ -117,6 +130,7 @@ function renderAssets() {
         '<td>' + asset.kategori + '</td>' +
         '<td><span class="status-badge status-' + asset.status.toLowerCase() + '">' + asset.status + '</span></td>' +
         '<td>' + asset.user + '</td>' +
+        '<td>' + (asset.warranty || '-') + (isExpired ? '<br><span class="text-expired">EXPIRED!</span>' : '') + '</td>' +
         '<td>' + '<button class="btn btn-edit" onclick="handleEdit(\'' + asset.id + '\')">Edit</button> ' +
         '<button class="btn btn-delete" onclick="handleDelete(\''+ asset.id + '\')">Hapus</button>' +
         '</td>';
@@ -217,11 +231,12 @@ form.addEventListener('submit', (e) => {
     const kategori = document.getElementById('asset-kategori').value;
     const status = document.getElementById('asset-status').value;
     const user = document.getElementById('asset-user').value;
+    const warranty = document.getElementById('asset-warranty').value; 
 
     if (id) {
-        updateAsset(id, { nama: nama, kategori: kategori, status: status, user: user });
+        updateAsset(id, { nama: nama, kategori: kategori, status: status, user: user, warranty: warranty }); // UBAH INI
     } else {
-        addAsset(nama, kategori, status, user);
+        addAsset(nama, kategori, status, user, warranty); // UBAH INI
     }
 
     renderAssets();
@@ -253,6 +268,7 @@ function handleEdit(id) {
     document.getElementById('asset-kategori').value = asset.kategori;
     document.getElementById('asset-status').value = asset.status;
     document.getElementById('asset-user').value = asset.user;
+    document.getElementById('asset-warranty').value = asset.warranty || '';
     
     openModal(true);
 }
@@ -282,8 +298,40 @@ console.log('it aset manager berhasil terbuka!!');
 // Event listener buat Search & Filter
 document.getElementById('search-input').addEventListener('input', renderAssets);
 document.getElementById('filter-status').addEventListener('change', renderAssets);
+//export to cvs
+function exportToCSV() {
+    const assets = getAssets();
+    if (assets.length === 0) {
+        alert('Tidak ada data aset yang tersimpan.');
+        return;
+    }
 
+    //buat header
+    let csvContent = 'ID,Nama Aset,Kategori,Status,Pengguna,Garansi,Tanggal Pembuatan\n';
 
+    //loop setiap asset, tambah string csv
+    for (let i = 0; i < assets.length; i++) {
+        const asset = assets[i];
+        csvContent += `${asset.id},${asset.nama},${asset.kategori},${asset.status},${asset.user},${asset.warranty},${asset.createdAt}\n`;
+    }
+
+    //buat bayangan memory di browser
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    //buat link download
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'aset.csv');
+    document.body.appendChild(link);
+    link.click();
+
+    //bersihin memory
+    document.body.removeChild(link);
+}
+
+// sambungin ke tombol export
+document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
 
 
 

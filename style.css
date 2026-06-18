@@ -325,3 +325,22 @@ body {
     outline: none;
     border-color: var(--accent-primary);
 }
+
+/* Warna kalau garansi habis */
+.row-expired {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border-left: 3px solid var(--status-retired);
+}
+
+.text-expired {
+    color: var(--status-retired);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Badge Status Lost */
+.status-lost {
+    background: rgba(100, 116, 139, 0.2);
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
