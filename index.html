@@ -57,6 +57,48 @@
                 </tbody>
             </table>
         </section>
+        </section>
+
+        <!-- Modal Form Tambah/Edit Aset -->
+        <div id="asset-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">Tambah Aset</h2>
+                    <span class="close-modal" id="close-modal">&times;</span>
+                </div>
+                <form id="asset-form">
+                    <input type="hidden" id="asset-id">
+                    <div class="form-group">
+                        <label>Nama Aset</label>
+                        <input type="text" id="asset-nama" required placeholder="Contoh: Dell Latitude 5520">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="asset-kategori" required>
+                            <option value="">Pilih Kategori...</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Software">Software</option>
+                            <option value="Network">Network</option>
+                            <option value="Peripheral">Peripheral</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="asset-status" required>
+                            <option value="Active">Active</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Retired">Retired</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Assigned User</label>
+                        <input type="text" id="asset-user" required placeholder="Contoh: Budi - IT Dept">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Simpan Aset</button>
+                </form>
+            </div>
+        </div>
+
      </main>
 
      <script src="app.js"></script>
