@@ -258,12 +258,14 @@ body {
 
 .modal-content {
     background-color: var(--bg-card);
-    margin: 10% auto;
+    margin: 5% auto; /* Kurangin margin atas biar lebih muat */
     padding: 24px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     width: 400px;
     max-width: 90%;
+    max-height: 85vh; /* Batasin tinggi maksimum 85% layar */
+    overflow-y: auto; /* Munculin scroll kalau kepanjangan */
     box-shadow: var(--shadow-glow);
 }
 
