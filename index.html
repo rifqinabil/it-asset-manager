@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT ASSET MANAGEMENT</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
      <!---- INI HEADER ---->
@@ -34,6 +35,10 @@
                 <span class="stats-number" id="retired-assets">0</span>
                 <span class="stats-label">Retired</span>
             </div>
+        </section>
+        <section class="chart-section" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 32px; display: flex; justify-content: center; height: 300px;">
+            <canvas id="assetChart">
+            </canvas>
         </section>
 
         <!---- isi aset nya ------->

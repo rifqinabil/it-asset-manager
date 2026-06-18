@@ -126,9 +126,9 @@ function renderAssets() {
 }
 
 // render statistik dasboard
+let myChart = null; 
 function renderStats() {
     const assets = getAssets() ;
-
     let total = assets.length;
     let active = 0;
     let maintenance = 0;
@@ -144,6 +144,41 @@ function renderStats() {
     document.getElementById('active-assets').textContent = active;
     document.getElementById('maintenance-assets').textContent = maintenance;
     document.getElementById('retired-assets').textContent = retired;
+
+    const ctx = document.getElementById('assetChart').getContext('2d');
+
+    // kalau ada chart sebelumnya, hapus
+    if (myChart) { 
+        myChart.destroy();
+    }
+
+    //bikin chat baru
+    myChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ['Active', 'Maintenance', 'Retired'],
+            datasets: [{
+                data: [active, maintenance, retired],
+                backgroundColor: [
+                    '#22c55e', // Hijau
+                    '#f59e0b', // Kuning
+                    '#ef4444'  // Merah
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legens: {
+                position: 'right',
+                labels: { color: '#e2e8f0'}
+            }
+        }
+    }
+});
 }
 
 // event handle 
