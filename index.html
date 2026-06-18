@@ -40,7 +40,19 @@
         <section class="table-section">
             <div class="table-header">
                 <h2>Daftar Aset</h2>
-                <button class="btn btn-primary" id="btn-add-asset">Tambah Aset</button>
+                <div class="table-actions" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="search-input" placeholder="Cari aset..." class="search-box">
+
+                    <select id="filter-status" class="filter-box">
+                        <option value="All">Semua</option>
+                        <option value="Active">Aktif</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Retired">Retired</option>
+                    </select>
+
+                    <button class="btn btn-primary" id="btn-add-asset">Tambah Aset</button>
+
+                </div>  
             </div>
             <table class="asset-table" id="asset-table">
                 <thead>

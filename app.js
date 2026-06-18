@@ -72,36 +72,57 @@ function deleteAsset(id) {
     saveAssets(filtered);
 }
 
-// tampilkan data ke layar
+// tampilkan data ke layar (dengan Search & Filter)
 function renderAssets() {
-    const assets = getAssets();
+    const allAssets = getAssets();
     const tbody = document.getElementById('asset-table-body');
+    
+    // Ambil nilai dari kotak pencarian & dropdown filter
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const filterStatus = document.getElementById('filter-status').value;
 
-// kosongin table dahulu
-tbody.innerHTML = '';
+    // Filter datanya!
+    const filteredAssets = [];
+    for (let i = 0; i < allAssets.length; i++) {
+        const asset = allAssets[i];
+        
+        // Cek apakah nama aset cocok dengan teks pencarian
+        const matchSearch = asset.nama.toLowerCase().includes(searchTerm);
+        
+        // Cek apakah status aset cocok dengan dropdown
+        const matchStatus = (filterStatus === 'All') || (asset.status === filterStatus);
 
-if (assets.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;"> Tidak ada data aset "tambah aset" untuk memlai.</td></tr>';
-    return;
-}
+        // Kalau dua-duanya cocok, masukin ke daftar yg mau ditampilin
+        if (matchSearch && matchStatus) {
+            filteredAssets.push(asset);
+        }
+    }
 
-//loop setiap asset dan bikin row di table 
-for (let i = 0; i < assets.length; i++){
-    const asset = assets[i];
-    const row = document.createElement('tr');
+    // Kosongin table dahulu
+    tbody.innerHTML = '';
 
-    row.innerHTML = 
-    '<td>' + asset.id + '</td>' +
-    '<td>' + asset.nama + '</td>' +
-    '<td>' + asset.kategori + '</td>' +
-    '<td><span class="status-badge status-' + asset.status.toLowerCase() + '">' + asset.status + '</span></td>' +
-    '<td>' + asset.user + '</td>' +
-    '<td>' + '<button class="btn btn-edit" onclick="handleEdit(\'' + asset.id + '\')">Edit</button> ' +
-    '<button class="btn btn-delete" onclick="handleDelete(\''+ asset.id + '\')">Hapus</button>' +
-    '</td>';
+    if (filteredAssets.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">Tidak ada data aset yang cocok.</td></tr>';
+        return;
+    }
 
-    tbody.appendChild(row);
-}
+    // loop setiap asset yang udah di-filter dan bikin row di table 
+    for (let i = 0; i < filteredAssets.length; i++) {
+        const asset = filteredAssets[i];
+        const row = document.createElement('tr');
+
+        row.innerHTML = 
+        '<td>' + asset.id + '</td>' +
+        '<td>' + asset.nama + '</td>' +
+        '<td>' + asset.kategori + '</td>' +
+        '<td><span class="status-badge status-' + asset.status.toLowerCase() + '">' + asset.status + '</span></td>' +
+        '<td>' + asset.user + '</td>' +
+        '<td>' + '<button class="btn btn-edit" onclick="handleEdit(\'' + asset.id + '\')">Edit</button> ' +
+        '<button class="btn btn-delete" onclick="handleDelete(\''+ asset.id + '\')">Hapus</button>' +
+        '</td>';
+
+        tbody.appendChild(row);
+    }
 }
 
 // render statistik dasboard
@@ -222,6 +243,10 @@ renderAssets();
 renderStats();
 
 console.log('it aset manager berhasil terbuka!!');
+
+// Event listener buat Search & Filter
+document.getElementById('search-input').addEventListener('input', renderAssets);
+document.getElementById('filter-status').addEventListener('change', renderAssets);
 
 
 
